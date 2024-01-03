@@ -11,6 +11,7 @@ def predict_age(
     clock_names: str = "horvath2013",
     dir: str = "pyaging_data",
     verbose: bool = True,
+    remove_added_features: bool = True,
 ) -> anndata.AnnData:
     """
     Predicts biological age using specified aging clocks.
@@ -140,7 +141,8 @@ def predict_age(
         add_clock_metadata_adata(adata, clock_name, dir, logger, indent_level=2)
 
         # Return adata to original size and number of features
-        adata = filter_missing_features(adata, logger, indent_level=2)
+        if remove_added_features:
+            adata = filter_missing_features(adata, logger, indent_level=2)
 
         # Flush memory
         gc.collect()
